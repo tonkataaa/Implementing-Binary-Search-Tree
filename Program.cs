@@ -62,7 +62,26 @@ public class BinarySearchTree
 
     public Node? Lookup(int value)
     {
-        //TODO
+        Node current = Root;
+
+        while (current != null)
+        {
+            var comparison = value.CompareTo(current.Value);
+
+            if (comparison > 0)
+            {
+                current = current.Right;
+            }
+            else if (comparison < 0)
+            {
+                current = current.Left;
+            }
+            else
+            {
+                return current;
+            }
+        }
+
         return null;
     }
 
