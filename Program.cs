@@ -85,8 +85,118 @@ public class BinarySearchTree
         return null;
     }
 
-    //Remove
+    //Delete
+    public void Delete(int value)
+    {
+        Node current = Root;
+        Node parent = null;
+
+        while (current != null && current.Value != value)
+        {
+            parent = current;
+            if (value < current.Value)
+            {
+                current = current.Left;
+
+            }
+            else
+            {
+                current = current.Right;
+            }
+        }
+
+        if (current == null) 
+        { 
+            return;
+        }
+
+        //First case: Node without childs
+        if (current.Left == null && current.Right == null)
+        {
+            if (parent == null)
+            {
+                Root = null;
+            }
+            else if (parent.Left == current)
+            {
+                parent.Left = null;
+            }
+            else
+            {
+                parent.Right = null;
+            }
+        }
+        //Second case: Node with one child
+        else if (current.Left == null || current.Right == null)
+        {
+            Node child = (current.Left != null) ? current.Left : current.Right!;
+
+            if (parent == null)
+            {
+                Root = child;
+            }
+            else if (parent.Left == current)
+            {
+                parent.Left = child;
+            }
+            else
+            {
+                parent.Right = child;
+            }
+        }
+        //Third case: Node with two children
+        else
+        {
+            Node successorParent = current;
+            Node successor = current.Right!;
+            while (successor.Left != null)
+            {
+                successorParent = successor;
+                successor = successor.Left;
+            }
+
+            current.Value = successor.Value;
+
+            if (successorParent.Left == successor)
+            {
+                successorParent.Left = successor.Right;
+
+            }
+            else
+            {
+                successorParent.Right = successor.Right;
+            }
+        }
+    }
+
 }
+
+public class Program
+{
+    public static void Main(string[] args)
+    {
+        BinarySearchTree tree = new BinarySearchTree();
+
+        tree.Insert(32);
+        tree.Insert(29);
+        tree.Insert(66);
+        tree.Insert(65);
+        tree.Insert(84);
+        tree.Insert(69);
+        tree.Insert(85);
+        tree.Insert(28);
+        tree.Insert(30);
+
+        Console.WriteLine(tree.Lookup(29) != null ? "Found 29" : "Not found");
+
+        
+        Console.WriteLine(tree.Lookup(30) != null ? "Found 30" : "Not found");
+        tree.Delete(30);
+        Console.WriteLine(tree.Lookup(30) != null ? "Found 30" : "Not found");
+
+    }
+}
+
 
 
 
